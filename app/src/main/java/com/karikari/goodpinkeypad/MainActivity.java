@@ -24,15 +24,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         GoodPinKeyPad keyPad = findViewById(R.id.key);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         keyPad.setKeyPadListener(new KeyPadListerner() {
             @Override
@@ -42,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onKeyBackPressed() {
+
+            }
+
+            @Override
+            public void onClear() {
 
             }
         });

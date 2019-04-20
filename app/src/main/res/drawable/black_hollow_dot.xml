@@ -5,16 +5,16 @@
             android:shape="oval">
 
             <solid
-                android:color="@color/white_transparent"
+                android:color="@color/transparent"
                 />
 
             <size
-                android:width="100dp"
-                android:height="100dp" />
+                android:width="20dp"
+                android:height="20dp" />
 
             <stroke
-                android:width="0dp"
-                android:color="#000000" />
+                android:width="2dp"
+                android:color="@color/eeirie_black_transparent" />
 
 
         </shape>

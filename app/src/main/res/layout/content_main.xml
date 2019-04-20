@@ -16,7 +16,10 @@
     <com.karikari.goodpinkeypad.GoodPinKeyPad
         android:id="@+id/key"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:pinEntry="six"
+        app:backgroundColor="@color/transparent"
+        app:KeyPadTheme="dark"/>
 
 
 
