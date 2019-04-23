@@ -32,6 +32,7 @@ public class GoodPinKeyPad extends LinearLayout {
     private Stack<String> indicators = new Stack<>();
     private KeyPadListerner listerner;
     private ImageButton mBackRight;
+    private View mBackPressView;
     private ImageButton mBackLeft;
     private int numberOfPins;
     private FrameLayout indicator_1, indicator_2, indicator_3, indicator_4, indicator_5, indicator_6;
@@ -68,17 +69,34 @@ public class GoodPinKeyPad extends LinearLayout {
         this.listerner = listerner;
     }
 
+    public void setBackPressView(View backView){
+        this.mBackPressView = backView;
+
+        mBackPressView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doClearpin();
+            }
+        });
+    }
+
 
     private void initAttributes(Context context, AttributeSet attrs) {
         //themeMap.clear();
-        themeMap.put(1, context.getResources().getDrawable(R.drawable.keys_default_theme));
+        themeMap.put(1, context.getResources().getDrawable(R.drawable.keys_white_theme));
         themeMap.put(2, context.getResources().getDrawable(R.drawable.keys_black_theme));
+        themeMap.put(3, context.getResources().getDrawable(R.drawable.keys_white_border_theme));
+        themeMap.put(4, context.getResources().getDrawable(R.drawable.keys_black_border_theme));
 
         solidMap.put(1, context.getResources().getDrawable(R.drawable.white_solid_dot));
         solidMap.put(2, context.getResources().getDrawable(R.drawable.black_solid_dot));
+        solidMap.put(3, context.getResources().getDrawable(R.drawable.white_solid_dot));
+        solidMap.put(4, context.getResources().getDrawable(R.drawable.black_solid_dot));
 
         holoMap.put(1, context.getResources().getDrawable(R.drawable.white_hollow_dot));
         holoMap.put(2, context.getResources().getDrawable(R.drawable.black_hollow_dot));
+        holoMap.put(3, context.getResources().getDrawable(R.drawable.white_hollow_dot));
+        holoMap.put(4, context.getResources().getDrawable(R.drawable.black_hollow_dot));
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GoodPinKeyPad, 0, 0);
 
@@ -191,24 +209,7 @@ public class GoodPinKeyPad extends LinearLayout {
         mBackRight.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (GoodPinKeyPad.this.listerner != null) {
-                    GoodPinKeyPad.this.listerner.onKeyBackPressed();
-                    try {
-                        if (indicators.size() != 0) {
-                            indicators.pop();
-                            setIdicators(indicators.size());
-                            //Log.d(TAG, "Remove indicators : " + indicators);
-                            //Log.d(TAG, " Real Value : " + pinToString(indicators));
-                        } else {
-                            setIdicators(indicators.size());
-                            ///Log.d(TAG, " Real Value : " + pinToString(indicators));
-                        }
-                        GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
+                doClearpin();
             }
         });
 
@@ -227,6 +228,28 @@ public class GoodPinKeyPad extends LinearLayout {
                 }
             }
         });
+    }
+
+    private void doClearpin(){
+        if (GoodPinKeyPad.this.listerner != null) {
+            GoodPinKeyPad.this.listerner.onKeyBackPressed();
+            try {
+                if (indicators.size() != 0) {
+                    indicators.pop();
+                    setIdicators(indicators.size());
+                    //Log.d(TAG, "Remove indicators : " + indicators);
+                    //Log.d(TAG, " Real Value : " + pinToString(indicators));
+                } else {
+                    setIdicators(indicators.size());
+                    ///Log.d(TAG, " Real Value : " + pinToString(indicators));
+                }
+                GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     private void setIdicators(int size) {

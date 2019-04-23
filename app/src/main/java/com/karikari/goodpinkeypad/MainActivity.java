@@ -2,6 +2,7 @@ package com.karikari.goodpinkeypad;
 
 import android.os.Bundle;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,8 +25,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        MaterialButton back = findViewById(R.id.bac);
         GoodPinKeyPad keyPad = findViewById(R.id.key);
 
+        keyPad.setBackPressView(back);
         keyPad.setKeyPadListener(new KeyPadListerner() {
             @Override
             public void onKeyPadPressed(String value) {

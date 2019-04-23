@@ -21,6 +21,9 @@
         <attr name="KeyPadTheme" format="enum">
             <enum name="white" value="1"/>
             <enum name="dark" value="2"/>
+            <enum name="white_border" value="3"/>
+            <enum name="dark_border" value="4"/>
         </attr>
+
     </declare-styleable>
 </resources>
