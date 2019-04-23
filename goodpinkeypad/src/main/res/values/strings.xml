@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GoodPinKeyPad</string>
+    <string name="app_name">GoodPinEntry</string>
+    <string name="action_settings">Settings</string>
 </resources>

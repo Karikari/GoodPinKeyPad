@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="GoodPinKeyPad">
-<!--
-        <attr name="titleText" format="string" localization="suggested" />
--->
+
         <attr name="backgroundColor" format="color" />
 
-        <attr name="keypadColor" format="color" />
+        <attr name="keyPadTextColor" format="color" />
+
+        <attr name="keyPadTextSize" format="string"/>
+
+        <attr name="keyPadBackPressIcon" format="integer"/>
+
+        <attr name="keyPadCancelAllIcon" format="integer"/>
 
         <attr name="pinEntry" format="enum">
             <enum name="four" value="4"/>

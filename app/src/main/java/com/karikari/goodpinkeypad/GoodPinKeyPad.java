@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class GoodPinKeyPad extends LinearLayout {
@@ -44,7 +45,7 @@ public class GoodPinKeyPad extends LinearLayout {
     private Drawable solid;
     private Drawable hollow;
 
-    private int backgroundColorValue, keypadtheme;
+    private int backgroundColorValue, keypadTextColor, keypadBackPressIcon, keypadCallAllIcon;
 
     public GoodPinKeyPad(Context context) {
         super(context);
@@ -68,7 +69,7 @@ public class GoodPinKeyPad extends LinearLayout {
     }
 
 
-    private void initAttributes(Context context, AttributeSet attrs){
+    private void initAttributes(Context context, AttributeSet attrs) {
         //themeMap.clear();
         themeMap.put(1, context.getResources().getDrawable(R.drawable.keys_default_theme));
         themeMap.put(2, context.getResources().getDrawable(R.drawable.keys_black_theme));
@@ -89,18 +90,30 @@ public class GoodPinKeyPad extends LinearLayout {
             this.solid = solidMap.get(this.themeId);
             this.hollow = holoMap.get(this.themeId);
 
-        }finally {
+            this.keypadTextColor = typedArray.getColor(R.styleable.GoodPinKeyPad_keyPadTextColor, context.getResources().getColor(R.color.white));
+            this.keypadBackPressIcon = typedArray.getResourceId(R.styleable.GoodPinKeyPad_keyPadBackPressIcon, -1);
+            this.keypadCallAllIcon = typedArray.getResourceId(R.styleable.GoodPinKeyPad_keyPadCancelAllIcon, -1);
+
+
+        } finally {
             typedArray.recycle();
         }
     }
 
-    private void setThemes(){
-        for(TextView textView : keypads){
+    private void setThemes() {
+        for (TextView textView : keypads) {
             textView.setBackground(this.theme);
+            textView.setTextColor(this.keypadTextColor);
+        }
+
+        if (this.keypadBackPressIcon != -1) {
+            mBackRight.setImageResource(this.keypadBackPressIcon);
+        }
+
+        if (this.keypadCallAllIcon != -1) {
+            mBackLeft.setImageResource(this.keypadCallAllIcon);
         }
     }
-
-
 
 
     private void initViews(Context context) {
@@ -141,7 +154,7 @@ public class GoodPinKeyPad extends LinearLayout {
             indicator_5.setVisibility(GONE);
         }
 
-        if(backgroundColorValue != 0){
+        if (backgroundColorValue != 0) {
             mRootLayout.setBackgroundColor(backgroundColorValue);
         }
 
@@ -154,25 +167,24 @@ public class GoodPinKeyPad extends LinearLayout {
     }
 
 
-
     private void setListerner() {
         for (final TextView keypad : keypads) {
-                keypad.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (GoodPinKeyPad.this.listerner != null) {
-                            indicators.push(keypad.getText().toString());
-                            //Log.d(TAG, "indicator Size : " + indicators.size());
-                            if(indicators.size() <= numberOfPins){
-                                setIdicators(indicators.size());
-                                GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
-                                Log.d(TAG, " Real Value : " + pinToString(indicators));
-                            }else{
-                                indicators.pop();
-                            }
+            keypad.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (GoodPinKeyPad.this.listerner != null) {
+                        indicators.push(keypad.getText().toString());
+                        //Log.d(TAG, "indicator Size : " + indicators.size());
+                        if (indicators.size() <= numberOfPins) {
+                            setIdicators(indicators.size());
+                            GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
+                            Log.d(TAG, " Real Value : " + pinToString(indicators));
+                        } else {
+                            indicators.pop();
                         }
                     }
-                });
+                }
+            });
         }
 
 
@@ -203,7 +215,7 @@ public class GoodPinKeyPad extends LinearLayout {
         mBackLeft.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(GoodPinKeyPad.this.listerner!=null){
+                if (GoodPinKeyPad.this.listerner != null) {
                     GoodPinKeyPad.this.listerner.onClear();
                     try {
                         indicators.clear();
