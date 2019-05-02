@@ -10,24 +10,23 @@
     android:orientation="vertical"
     tools:showIn="@layout/activity_main">
 
-    <!--
-        <include layout="@layout/key_pad_layout"/>
-    -->
 
     <com.karikari.goodpinkeypad.GoodPinKeyPad
         android:id="@+id/key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:KeyPadTheme="dark_border"
-        app:backgroundColor="@color/transparent"
+        app:keyPadTheme="dark_border"
+        app:keyPadBackgroundColor="@color/transparent"
         app:keyPadTextColor="@color/eeirie_black"
+        app:keyPadMarginTop="10dp"
+        app:keyPadbackPressVisiblity="gone"
         app:pinEntry="four" />
 
 
-    <com.google.android.material.button.MaterialButton
+   <!-- <com.google.android.material.button.MaterialButton
         android:id="@+id/bac"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
 
 
 </LinearLayout>

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -12,12 +14,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
-
-import androidx.appcompat.app.AppCompatDelegate;
 
 public class GoodPinKeyPad extends LinearLayout {
 
@@ -32,10 +34,11 @@ public class GoodPinKeyPad extends LinearLayout {
     private Stack<String> indicators = new Stack<>();
     private KeyPadListerner listerner;
     private ImageButton mBackRight;
+    private View mBackPressView, mCancelAllView;
     private ImageButton mBackLeft;
     private int numberOfPins;
     private FrameLayout indicator_1, indicator_2, indicator_3, indicator_4, indicator_5, indicator_6;
-    private LinearLayout mRootLayout;
+    private LinearLayout mRootLayout, keyPadContainer;
     private HashMap<Integer, Drawable> themeMap = new HashMap<>();
     private HashMap<Integer, Drawable> solidMap = new HashMap<>();
     private HashMap<Integer, Drawable> holoMap = new HashMap<>();
@@ -45,7 +48,10 @@ public class GoodPinKeyPad extends LinearLayout {
     private Drawable solid;
     private Drawable hollow;
 
-    private int backgroundColorValue, keypadTextColor, keypadBackPressIcon, keypadCallAllIcon;
+
+    private float marginTop, marginLeft, margintRight, marginBottom;
+
+    private int backgroundColorValue, keypadTextColor, keypadBackPressIcon, keypadCallAllIcon, backpressVisibility;
 
     public GoodPinKeyPad(Context context) {
         super(context);
@@ -68,24 +74,50 @@ public class GoodPinKeyPad extends LinearLayout {
         this.listerner = listerner;
     }
 
+    public void setBackPressView(View backView){
+        this.mBackPressView = backView;
+        mBackPressView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doClearpin();
+            }
+        });
+    }
+
+    public void setCallAllView(View callAllView){
+        this.mCancelAllView = callAllView;
+        mCancelAllView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAll();
+            }
+        });
+    }
+
 
     private void initAttributes(Context context, AttributeSet attrs) {
         //themeMap.clear();
-        themeMap.put(1, context.getResources().getDrawable(R.drawable.keys_default_theme));
+        themeMap.put(1, context.getResources().getDrawable(R.drawable.keys_white_theme));
         themeMap.put(2, context.getResources().getDrawable(R.drawable.keys_black_theme));
+        themeMap.put(3, context.getResources().getDrawable(R.drawable.keys_white_border_theme));
+        themeMap.put(4, context.getResources().getDrawable(R.drawable.keys_black_border_theme));
 
         solidMap.put(1, context.getResources().getDrawable(R.drawable.white_solid_dot));
         solidMap.put(2, context.getResources().getDrawable(R.drawable.black_solid_dot));
+        solidMap.put(3, context.getResources().getDrawable(R.drawable.white_solid_dot));
+        solidMap.put(4, context.getResources().getDrawable(R.drawable.black_solid_dot));
 
         holoMap.put(1, context.getResources().getDrawable(R.drawable.white_hollow_dot));
         holoMap.put(2, context.getResources().getDrawable(R.drawable.black_hollow_dot));
+        holoMap.put(3, context.getResources().getDrawable(R.drawable.white_hollow_dot));
+        holoMap.put(4, context.getResources().getDrawable(R.drawable.black_hollow_dot));
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GoodPinKeyPad, 0, 0);
 
         try {
-            this.backgroundColorValue = typedArray.getColor(R.styleable.GoodPinKeyPad_backgroundColor, context.getResources().getColor(R.color.colorPrimaryDark));
+            this.backgroundColorValue = typedArray.getColor(R.styleable.GoodPinKeyPad_keyPadBackgroundColor, context.getResources().getColor(R.color.colorPrimaryDark));
             this.numberOfPins = typedArray.getInt(R.styleable.GoodPinKeyPad_pinEntry, 4);
-            this.themeId = typedArray.getInt(R.styleable.GoodPinKeyPad_KeyPadTheme, 1);
+            this.themeId = typedArray.getInt(R.styleable.GoodPinKeyPad_keyPadTheme, 1);
             this.theme = themeMap.get(this.themeId);
             this.solid = solidMap.get(this.themeId);
             this.hollow = holoMap.get(this.themeId);
@@ -94,6 +126,11 @@ public class GoodPinKeyPad extends LinearLayout {
             this.keypadBackPressIcon = typedArray.getResourceId(R.styleable.GoodPinKeyPad_keyPadBackPressIcon, -1);
             this.keypadCallAllIcon = typedArray.getResourceId(R.styleable.GoodPinKeyPad_keyPadCancelAllIcon, -1);
 
+            this.marginLeft = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginLeft, dpToPx(0));
+            this.marginTop = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginTop, dpToPx(0));
+            this.marginBottom = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginBottom, dpToPx(0));
+            this.margintRight = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginRight, dpToPx(0));
+            this.backpressVisibility = typedArray.getInteger(R.styleable.GoodPinKeyPad_keyPadbackPressVisiblity, 0);
 
         } finally {
             typedArray.recycle();
@@ -112,6 +149,18 @@ public class GoodPinKeyPad extends LinearLayout {
 
         if (this.keypadCallAllIcon != -1) {
             mBackLeft.setImageResource(this.keypadCallAllIcon);
+        }
+
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(dpToPx(marginLeft), dpToPx(marginTop), dpToPx(margintRight), dpToPx(marginBottom));
+        keyPadContainer.setLayoutParams(params);
+
+        if(this.backpressVisibility == 0){
+            mBackLeft.setVisibility(GONE);
+            mBackRight.setVisibility(GONE);
+        }else{
+            mBackLeft.setVisibility(VISIBLE);
+            mBackRight.setVisibility(VISIBLE);
         }
     }
 
@@ -140,8 +189,7 @@ public class GoodPinKeyPad extends LinearLayout {
         indicator_5 = view.findViewById(R.id.indicator_5);
         indicator_6 = view.findViewById(R.id.indicator_6);
         mRootLayout = view.findViewById(R.id.root_layout);
-        mBackRight.setBackground(this.theme);
-        mBackLeft.setBackground(this.theme);
+        keyPadContainer = view.findViewById(R.id.key_pad_container);
         setListerner();
         setThemes();
 
@@ -191,42 +239,51 @@ public class GoodPinKeyPad extends LinearLayout {
         mBackRight.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (GoodPinKeyPad.this.listerner != null) {
-                    GoodPinKeyPad.this.listerner.onKeyBackPressed();
-                    try {
-                        if (indicators.size() != 0) {
-                            indicators.pop();
-                            setIdicators(indicators.size());
-                            //Log.d(TAG, "Remove indicators : " + indicators);
-                            //Log.d(TAG, " Real Value : " + pinToString(indicators));
-                        } else {
-                            setIdicators(indicators.size());
-                            ///Log.d(TAG, " Real Value : " + pinToString(indicators));
-                        }
-                        GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
+                doClearpin();
             }
         });
 
         mBackLeft.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (GoodPinKeyPad.this.listerner != null) {
-                    GoodPinKeyPad.this.listerner.onClear();
-                    try {
-                        indicators.clear();
-                        setIdicators(0);
-                        GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+               clearAll();
             }
         });
+    }
+
+    private void clearAll(){
+        if (GoodPinKeyPad.this.listerner != null) {
+            GoodPinKeyPad.this.listerner.onClear();
+            try {
+                indicators.clear();
+                setIdicators(0);
+                GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void doClearpin(){
+        if (GoodPinKeyPad.this.listerner != null) {
+            GoodPinKeyPad.this.listerner.onKeyBackPressed();
+            try {
+                if (indicators.size() != 0) {
+                    indicators.pop();
+                    setIdicators(indicators.size());
+                    //Log.d(TAG, "Remove indicators : " + indicators);
+                    //Log.d(TAG, " Real Value : " + pinToString(indicators));
+                } else {
+                    setIdicators(indicators.size());
+                    ///Log.d(TAG, " Real Value : " + pinToString(indicators));
+                }
+                GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     private void setIdicators(int size) {
@@ -298,6 +355,15 @@ public class GoodPinKeyPad extends LinearLayout {
         }
 
         return str;
+    }
+
+    public float dipToPixels(Context context, float dipValue){
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,  dipValue, metrics);
+    }
+
+    public int dpToPx(float valueInDp) {
+        return (int)TypedValue.applyDimension(1, valueInDp, this.getResources().getDisplayMetrics());
     }
 
 

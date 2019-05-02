@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    android:id="@+id/root_layout"
     android:paddingBottom="20dp">
 
     <LinearLayout
@@ -40,7 +40,7 @@
             style="@style/dots_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_hollow_dot"/>
+            android:background="@drawable/white_hollow_dot" />
 
         <FrameLayout
             android:id="@+id/indicator_5"
@@ -56,16 +56,16 @@
             style="@style/dots_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_hollow_dot"/>
+            android:background="@drawable/white_hollow_dot" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/key_pad_holder"
+        android:id="@+id/key_pad_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -270,16 +270,16 @@
                 android:layout_weight="1">
 
                 <ImageButton
-                    android:visibility="gone"
                     android:id="@+id/back_left"
                     style="@style/key_pad_style"
                     android:layout_width="@dimen/key_size"
                     android:layout_height="@dimen/key_size"
                     android:layout_gravity="center"
-                    android:background="@drawable/keys_white_theme"
-                    android:src="@drawable/clear"
+                    android:background="@color/transparent"
                     android:gravity="center"
-                    android:text="" />
+                    android:src="@drawable/clear"
+                    android:text=""
+                    android:visibility="visible" />
 
             </FrameLayout>
 
@@ -299,7 +299,6 @@
                     android:text="0" />
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/key11"
                     style="@style/key_pad_style"
                     android:layout_width="@dimen/key_size"
@@ -307,7 +306,8 @@
                     android:layout_gravity="center"
                     android:background="@drawable/keys_white_theme"
                     android:gravity="center"
-                    android:text="0" />
+                    android:text="0"
+                    android:visibility="gone" />
 
             </FrameLayout>
 
@@ -317,16 +317,16 @@
                 android:layout_weight="1">
 
                 <ImageButton
-                    android:visibility="gone"
                     android:id="@+id/back_right"
                     style="@style/key_pad_style"
                     android:layout_width="@dimen/key_size"
                     android:layout_height="@dimen/key_size"
                     android:layout_gravity="center"
-                    android:background="@drawable/keys_white_theme"
-                    android:src="@drawable/back"
                     android:gravity="center"
-                    android:textAlignment="center" />
+                    android:src="@drawable/back"
+                    android:textAlignment="center"
+                    android:background="@color/transparent"
+                    android:visibility="visible" />
 
             </FrameLayout>
 
