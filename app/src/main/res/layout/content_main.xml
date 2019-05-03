@@ -8,6 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:showIn="@layout/activity_main">
 
 
@@ -15,12 +16,13 @@
         android:id="@+id/key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:keyPadTheme="dark_border"
-        app:keyPadBackgroundColor="@color/transparent"
-        app:keyPadTextColor="@color/eeirie_black"
-        app:keyPadMarginTop="10dp"
-        app:keyPadbackPressVisiblity="gone"
-        app:pinEntry="four" />
+        app:keyPadTheme="white"
+        app:keyPadBackgroundColor="@color/colorPrimary"
+        app:keyPadTextColor="@color/white"
+        app:keyPadMarginTop="20dp"
+        app:keyPadBackPressIcon="@drawable/back_white"
+        app:keyPadCancelAllIcon="@drawable/clear_white"
+        app:pinEntry="four"/>
 
 
    <!-- <com.google.android.material.button.MaterialButton
