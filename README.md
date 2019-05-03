@@ -14,3 +14,9 @@
   }
 }
 ```
+2 Add the Dependency
+```
+  dependencies {
+	   implementation 'com.github.Karikari:GoodPinKeyPad:latest-version'
+	}
+```
