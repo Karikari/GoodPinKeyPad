@@ -14,7 +14,7 @@
   }
 }
 ```
-2 Add the Dependency
+2. Add the Dependency
 ```
   dependencies {
 	   implementation 'com.github.Karikari:GoodPinKeyPad:latest-version'
@@ -33,4 +33,25 @@
         app:keyPadBackPressIcon="@drawable/back_white"
         app:keyPadCancelAllIcon="@drawable/clear_white"
         app:pinEntry="four"/>
+```
+4. Add the Code
+```
+    GoodPinKeyPad keyPad = findViewById(R.id.key);
+
+    keyPad.setKeyPadListener(new KeyPadListerner() {
+            @Override
+            public void onKeyPadPressed(String value) {
+                Log.d(TAG, "Pin : "+ value);
+            }
+
+            @Override
+            public void onKeyBackPressed() {
+	       //implement your code
+            }
+
+            @Override
+            public void onClear() {
+
+            }
+     });
 ```
