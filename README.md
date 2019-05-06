@@ -33,7 +33,7 @@
         app:keyPadBackgroundColor="@color/white"
         app:keyPadTextColor="@color/eeirie_black"
         app:keyPadMarginTop="20dp"
-        app:pinEntry="four"/> // You can set it to five and six 
+        app:pinEntry="four"/> // You can set it to five and six default is four
 ```
 4. Add the Code
 ```
