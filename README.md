@@ -24,17 +24,16 @@
 ```
 3. Add the View to your layout
 ```
-    <com.karikari.goodpinkeypad.GoodPinKeyPad
+   <com.karikari.goodpinkeypad.GoodPinKeyPad
         android:id="@+id/key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:keyPadTheme="white"
-        app:keyPadBackgroundColor="@color/colorPrimary"
-        app:keyPadTextColor="@color/white"
+        android:layout_marginTop="100dp"
+        app:keyPadStyle="dark_border" // style availble are "dark, white, white border"
+        app:keyPadBackgroundColor="@color/white"
+        app:keyPadTextColor="@color/eeirie_black"
         app:keyPadMarginTop="20dp"
-        app:keyPadBackPressIcon="@drawable/back_white"
-        app:keyPadCancelAllIcon="@drawable/clear_white"
-        app:pinEntry="four"/>
+        app:pinEntry="four"/> // You can set it to five and six 
 ```
 4. Add the Code
 ```
