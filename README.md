@@ -16,7 +16,7 @@
   }
 }
 ```
-2. Add the Dependency
+2. Add the Dependency [![](https://jitpack.io/v/Karikari/GoodPinKeyPad.svg)](https://jitpack.io/#Karikari/GoodPinKeyPad)
 ```
   dependencies {
 	   implementation 'com.github.Karikari:GoodPinKeyPad:latest-version'
