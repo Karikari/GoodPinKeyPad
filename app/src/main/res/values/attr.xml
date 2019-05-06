@@ -27,7 +27,7 @@
             <enum name="six" value="6"/>
         </attr>
 
-        <attr name="keyPadTheme" format="enum">
+        <attr name="keyPadStyle" format="enum">
             <enum name="white" value="1"/>
             <enum name="dark" value="2"/>
             <enum name="white_border" value="3"/>

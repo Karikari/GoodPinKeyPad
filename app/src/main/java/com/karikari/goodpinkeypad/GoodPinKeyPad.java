@@ -117,7 +117,7 @@ public class GoodPinKeyPad extends LinearLayout {
         try {
             this.backgroundColorValue = typedArray.getColor(R.styleable.GoodPinKeyPad_keyPadBackgroundColor, context.getResources().getColor(R.color.colorPrimaryDark));
             this.numberOfPins = typedArray.getInt(R.styleable.GoodPinKeyPad_pinEntry, 4);
-            this.themeId = typedArray.getInt(R.styleable.GoodPinKeyPad_keyPadTheme, 1);
+            this.themeId = typedArray.getInt(R.styleable.GoodPinKeyPad_keyPadStyle, 1);
             this.theme = themeMap.get(this.themeId);
             this.solid = solidMap.get(this.themeId);
             this.hollow = holoMap.get(this.themeId);
