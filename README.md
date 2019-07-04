@@ -24,20 +24,20 @@
 	}
 ```
 3. Add the View to your layout
-```
+```xml
    <com.karikari.goodpinkeypad.GoodPinKeyPad
         android:id="@+id/key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        app:keyPadStyle="dark_border" // style availble are "dark, white, white border"
-        app:keyPadBackgroundColor="@color/white"
-        app:keyPadTextColor="@color/eeirie_black"
-        app:keyPadMarginTop="20dp"
+        app:keyPadStyle="dark_border" // style availble are "dark, white, white_border and dark_border"
+        app:backgroundColor="@color/white"
+        app:textColor="@color/eeirie_black"
+        app:marginTop="20dp"
         app:pinEntry="four"/> // You can set it to five and six default is four
 ```
 4. Add the Code
-```
+```java
     GoodPinKeyPad keyPad = findViewById(R.id.key);
 
     keyPad.setKeyPadListener(new KeyPadListerner() {
