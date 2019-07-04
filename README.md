@@ -5,12 +5,7 @@
 
 | White Style     | Dark Sytle   
 | ------------- |:-------------:|
-| col 3 is      | right-aligned |
-| col 2 is      | centered      |
-
-<img src="https://user-images.githubusercontent.com/6484414/57070437-edc5d300-6cc6-11e9-960f-f1a9efc7e92d.gif" width="400" height="750" />
-
-<img src="https://user-images.githubusercontent.com/6484414/57071996-ad1c8880-6ccb-11e9-92b0-56214022e5a4.gif" width="400" height="750" />
+| <img src="https://user-images.githubusercontent.com/6484414/60676516-9a126a00-9e6e-11e9-92cb-f62dc66c04ad.gif" width="400" height="750" />     | <img src="https://user-images.githubusercontent.com/6484414/60676515-9a126a00-9e6e-11e9-9f4c-520a21631a81.gif" width="400" height="750" /> |
 
 ### How
 1.  Add it in your root build.gradle at the end of repositories:
