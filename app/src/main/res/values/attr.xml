@@ -34,7 +34,7 @@
             <enum name="dark_border" value="4"/>
         </attr>
 
-        <attr name="backPressVisiblity" format="enum">
+        <attr name="controlsPressVisiblity" format="enum">
             <enum name="visible" value="1"/>
             <enum name="gone" value="0"/>
         </attr>

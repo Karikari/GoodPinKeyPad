@@ -42,12 +42,16 @@ public class GoodPinKeyPad extends LinearLayout {
     private HashMap<Integer, Drawable> themeMap = new HashMap<>();
     private HashMap<Integer, Drawable> solidMap = new HashMap<>();
     private HashMap<Integer, Drawable> holoMap = new HashMap<>();
+    private HashMap<Integer, Drawable> canCelMap = new HashMap<>();
+    private HashMap<Integer, Drawable> backMap = new HashMap<>();
 
     private int themeId;
     private Drawable theme;
     private Drawable solid;
     private Drawable hollow;
     private Drawable keypadCallAllIcon, keypadBackPressIcon;
+    private Drawable back;
+    private Drawable cancel;
 
 
     private float marginTop, marginLeft, margintRight, marginBottom;
@@ -97,7 +101,7 @@ public class GoodPinKeyPad extends LinearLayout {
 
 
     private void initAttributes(Context context, AttributeSet attrs) {
-        //themeMap.clear();
+        //themeMap.clear_dark();
         themeMap.put(1, context.getResources().getDrawable(R.drawable.keys_white_theme));
         themeMap.put(2, context.getResources().getDrawable(R.drawable.keys_black_theme));
         themeMap.put(3, context.getResources().getDrawable(R.drawable.keys_white_border_theme));
@@ -113,6 +117,17 @@ public class GoodPinKeyPad extends LinearLayout {
         holoMap.put(3, context.getResources().getDrawable(R.drawable.white_hollow_dot));
         holoMap.put(4, context.getResources().getDrawable(R.drawable.black_hollow_dot));
 
+        backMap.put(1, context.getResources().getDrawable(R.drawable.back_white));
+        backMap.put(2, context.getResources().getDrawable(R.drawable.back_dark));
+        backMap.put(3, context.getResources().getDrawable(R.drawable.back_white));
+        backMap.put(4, context.getResources().getDrawable(R.drawable.back_dark));
+
+        canCelMap.put(1, context.getResources().getDrawable(R.drawable.clear_white));
+        canCelMap.put(2, context.getResources().getDrawable(R.drawable.clear_dark));
+        canCelMap.put(3, context.getResources().getDrawable(R.drawable.clear_white));
+        canCelMap.put(4, context.getResources().getDrawable(R.drawable.clear_dark));
+
+
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GoodPinKeyPad, 0, 0);
         try {
             this.backgroundColor = typedArray.getColor(R.styleable.GoodPinKeyPad_backgroundColor, context.getResources().getColor(R.color.transparent));
@@ -121,6 +136,8 @@ public class GoodPinKeyPad extends LinearLayout {
             this.theme = themeMap.get(this.themeId);
             this.solid = solidMap.get(this.themeId);
             this.hollow = holoMap.get(this.themeId);
+            this.back = backMap.get(themeId);
+            this.cancel = canCelMap.get(themeId);
 
             this.keypadTextColor = typedArray.getColor(R.styleable.GoodPinKeyPad_textColor, context.getResources().getColor(R.color.white));
             this.keypadBackPressIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_backPressIcon);
@@ -130,7 +147,7 @@ public class GoodPinKeyPad extends LinearLayout {
             this.marginTop = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginTop, dpToPx(0));
             this.marginBottom = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginBottom, dpToPx(0));
             this.margintRight = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginRight, dpToPx(0));
-            this.backpressVisibility = typedArray.getInteger(R.styleable.GoodPinKeyPad_backPressVisiblity, 1);
+            this.backpressVisibility = typedArray.getInteger(R.styleable.GoodPinKeyPad_controlsPressVisiblity, 1);
 
         } finally {
             typedArray.recycle();
@@ -163,6 +180,11 @@ public class GoodPinKeyPad extends LinearLayout {
         }else{
             mBackLeft.setVisibility(VISIBLE);
             mBackRight.setVisibility(VISIBLE);
+
+            if(keypadBackPressIcon==null && keypadCallAllIcon==null){
+                mBackLeft.setImageDrawable(this.cancel);
+                mBackRight.setImageDrawable(this.back);
+            }
         }
     }
 
@@ -201,7 +223,7 @@ public class GoodPinKeyPad extends LinearLayout {
         }
 
         if (numberOfPins == 5) {
-            indicator_5.setVisibility(GONE);
+            indicator_6.setVisibility(GONE);
         }
 
 
@@ -223,7 +245,7 @@ public class GoodPinKeyPad extends LinearLayout {
                 public void onClick(View v) {
                     if (GoodPinKeyPad.this.listerner != null) {
                         indicators.push(keypad.getText().toString());
-                        //Log.d(TAG, "indicator Size : " + indicators.size());
+                        Log.d(TAG, "indicator Size : " + indicators.size());
                         if (indicators.size() <= numberOfPins) {
                             setIdicators(indicators.size());
                             GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
@@ -254,7 +276,7 @@ public class GoodPinKeyPad extends LinearLayout {
         mBackLeft.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               clearAll();
+                clearAll();
             }
         });
     }
@@ -279,11 +301,8 @@ public class GoodPinKeyPad extends LinearLayout {
                 if (indicators.size() != 0) {
                     indicators.pop();
                     setIdicators(indicators.size());
-                    //Log.d(TAG, "Remove indicators : " + indicators);
-                    //Log.d(TAG, " Real Value : " + pinToString(indicators));
                 } else {
                     setIdicators(indicators.size());
-                    ///Log.d(TAG, " Real Value : " + pinToString(indicators));
                 }
                 GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
             } catch (Exception e) {
@@ -295,7 +314,6 @@ public class GoodPinKeyPad extends LinearLayout {
     }
 
     private void setIdicators(int size) {
-        Log.d(TAG, "INDICATOR SIZE : " + size);
         switch (size) {
             case 0:
                 indicator_1.setBackground(hollow);

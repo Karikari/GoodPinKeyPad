@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/eeirie_black_transparent"
     tools:showIn="@layout/activity_main">
 
 
@@ -17,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        app:keyPadStyle="dark_border"
-        app:textColor="@color/eeirie_black"
+        app:keyPadStyle="white"
+        app:textColor="@color/white"
         app:marginTop="20dp"
         app:pinEntry="five"/>
 

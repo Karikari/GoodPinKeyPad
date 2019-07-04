@@ -2,23 +2,23 @@
 <resources>
     <declare-styleable name="GoodPinKeyPad">
 
-        <attr name="keyPadBackgroundColor" format="color" />
+        <attr name="backgroundColor" format="reference|color" />
 
-        <attr name="keyPadTextColor" format="color" />
+        <attr name="textColor" format="reference|color" />
 
-        <attr name="keyPadTextSize" format="dimension"/>
+        <attr name="textSize" format="dimension"/>
 
-        <attr name="keyPadBackPressIcon" format="integer"/>
+        <attr name="backPressIcon" format="reference"/>
 
-        <attr name="keyPadCancelAllIcon" format="integer"/>
+        <attr name="cancelIcon" format="reference"/>
 
-        <attr name="keyPadMarginTop" format="dimension"/>
+        <attr name="marginTop" format="dimension"/>
 
-        <attr name="keyPadMarginLeft" format="dimension"/>
+        <attr name="marginLeft" format="dimension"/>
 
-        <attr name="keyPadMarginRight" format="dimension"/>
+        <attr name="marginRight" format="dimension"/>
 
-        <attr name="keyPadMarginBottom" format="dimension"/>
+        <attr name="marginBottom" format="dimension"/>
 
 
         <attr name="pinEntry" format="enum">
@@ -34,7 +34,7 @@
             <enum name="dark_border" value="4"/>
         </attr>
 
-        <attr name="keyPadbackPressVisiblity" format="enum">
+        <attr name="controlsPressVisiblity" format="enum">
             <enum name="visible" value="1"/>
             <enum name="gone" value="0"/>
         </attr>

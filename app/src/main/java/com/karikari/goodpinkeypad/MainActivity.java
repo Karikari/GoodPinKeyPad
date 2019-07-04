@@ -25,10 +25,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //MaterialButton back = findViewById(R.id.bac);
+        //MaterialButton back_dark = findViewById(R.id.bac);
         GoodPinKeyPad keyPad = findViewById(R.id.key);
 
-        //keyPad.setBackPressView(back);
+        //keyPad.setBackPressView(back_dark);
         keyPad.setKeyPadListener(new KeyPadListerner() {
             @Override
             public void onKeyPadPressed(String value) {

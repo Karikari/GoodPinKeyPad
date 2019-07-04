@@ -276,7 +276,6 @@
                     android:layout_gravity="center"
                     android:background="@color/transparent"
                     android:gravity="center"
-                    android:src="@drawable/clear"
                     android:text=""
                     android:visibility="visible" />
 
@@ -322,7 +321,6 @@
                     android:layout_height="@dimen/key_size"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:src="@drawable/back"
                     android:textAlignment="center"
                     android:background="@color/transparent"
                     android:visibility="visible" />

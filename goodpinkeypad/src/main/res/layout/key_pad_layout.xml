@@ -5,14 +5,15 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    android:paddingBottom="20dp">
+    android:paddingBottom="50dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/indicator_layout">
 
         <FrameLayout
             android:id="@+id/indicator_1"
@@ -57,8 +58,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_hollow_dot" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -277,7 +276,6 @@
                     android:layout_gravity="center"
                     android:background="@color/transparent"
                     android:gravity="center"
-                    android:src="@drawable/clear"
                     android:text=""
                     android:visibility="visible" />
 
@@ -323,7 +321,6 @@
                     android:layout_height="@dimen/key_size"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:src="@drawable/back"
                     android:textAlignment="center"
                     android:background="@color/transparent"
                     android:visibility="visible" />
