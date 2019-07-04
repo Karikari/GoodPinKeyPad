@@ -38,7 +38,7 @@ public class GoodPinKeyPad extends LinearLayout {
     private ImageButton mBackLeft;
     private int numberOfPins;
     private FrameLayout indicator_1, indicator_2, indicator_3, indicator_4, indicator_5, indicator_6;
-    private LinearLayout mRootLayout, keyPadContainer;
+    private LinearLayout mRootLayout, keyPadContainer, mIndicator_layout;
     private HashMap<Integer, Drawable> themeMap = new HashMap<>();
     private HashMap<Integer, Drawable> solidMap = new HashMap<>();
     private HashMap<Integer, Drawable> holoMap = new HashMap<>();
@@ -52,7 +52,7 @@ public class GoodPinKeyPad extends LinearLayout {
 
     private float marginTop, marginLeft, margintRight, marginBottom;
 
-    private int backgroundColorValue, keypadTextColor, backpressVisibility;
+    private int backgroundColor, keypadTextColor, backpressVisibility;
 
     public GoodPinKeyPad(Context context) {
         super(context);
@@ -115,22 +115,22 @@ public class GoodPinKeyPad extends LinearLayout {
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GoodPinKeyPad, 0, 0);
         try {
-            this.backgroundColorValue = typedArray.getColor(R.styleable.GoodPinKeyPad_keyPadBackgroundColor, context.getResources().getColor(R.color.colorPrimaryDark));
+            this.backgroundColor = typedArray.getColor(R.styleable.GoodPinKeyPad_backgroundColor, context.getResources().getColor(R.color.transparent));
             this.numberOfPins = typedArray.getInt(R.styleable.GoodPinKeyPad_pinEntry, 4);
             this.themeId = typedArray.getInt(R.styleable.GoodPinKeyPad_keyPadStyle, 1);
             this.theme = themeMap.get(this.themeId);
             this.solid = solidMap.get(this.themeId);
             this.hollow = holoMap.get(this.themeId);
 
-            this.keypadTextColor = typedArray.getColor(R.styleable.GoodPinKeyPad_keyPadTextColor, context.getResources().getColor(R.color.white));
-            this.keypadBackPressIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_keyPadBackPressIcon);
-            this.keypadCallAllIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_keyPadCancelAllIcon);
+            this.keypadTextColor = typedArray.getColor(R.styleable.GoodPinKeyPad_textColor, context.getResources().getColor(R.color.white));
+            this.keypadBackPressIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_backPressIcon);
+            this.keypadCallAllIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_cancelIcon);
 
-            this.marginLeft = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginLeft, dpToPx(0));
-            this.marginTop = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginTop, dpToPx(0));
-            this.marginBottom = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginBottom, dpToPx(0));
-            this.margintRight = typedArray.getDimension(R.styleable.GoodPinKeyPad_keyPadMarginRight, dpToPx(0));
-            this.backpressVisibility = typedArray.getInteger(R.styleable.GoodPinKeyPad_keyPadbackPressVisiblity, 1);
+            this.marginLeft = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginLeft, dpToPx(0));
+            this.marginTop = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginTop, dpToPx(0));
+            this.marginBottom = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginBottom, dpToPx(0));
+            this.margintRight = typedArray.getDimension(R.styleable.GoodPinKeyPad_marginRight, dpToPx(0));
+            this.backpressVisibility = typedArray.getInteger(R.styleable.GoodPinKeyPad_backPressVisiblity, 1);
 
         } finally {
             typedArray.recycle();
@@ -204,9 +204,8 @@ public class GoodPinKeyPad extends LinearLayout {
             indicator_5.setVisibility(GONE);
         }
 
-        if (backgroundColorValue != 0) {
-            mRootLayout.setBackgroundColor(backgroundColorValue);
-        }
+
+        mRootLayout.setBackgroundColor(backgroundColor);
 
         indicator_1.setBackground(hollow);
         indicator_2.setBackground(hollow);
@@ -229,6 +228,13 @@ public class GoodPinKeyPad extends LinearLayout {
                             setIdicators(indicators.size());
                             GoodPinKeyPad.this.listerner.onKeyPadPressed(pinToString(indicators));
                             Log.d(TAG, " Real Value : " + pinToString(indicators));
+                        } else {
+                            indicators.pop();
+                        }
+                    }else{
+                        indicators.push(keypad.getText().toString());
+                        if (indicators.size() <= numberOfPins) {
+                            setIdicators(indicators.size());
                         } else {
                             indicators.pop();
                         }
@@ -355,7 +361,6 @@ public class GoodPinKeyPad extends LinearLayout {
         for (String s : indicators) {
             str += s;
         }
-
         return str;
     }
 
