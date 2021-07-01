@@ -8,12 +8,12 @@
     android:paddingBottom="50dp">
 
     <LinearLayout
+        android:id="@+id/indicator_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:id="@+id/indicator_layout">
+        android:orientation="horizontal">
 
         <FrameLayout
             android:id="@+id/indicator_1"
@@ -60,15 +60,25 @@
             android:background="@drawable/white_hollow_dot" />
     </LinearLayout>
 
-    <LinearLayout
-        android:visibility="gone"
+    <TextView
+        android:id="@+id/mErrorText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:gravity="center"
+        android:text="Error Text"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:textColor="#db3a34" />
+
+    <LinearLayout
+        android:id="@+id/mNumberLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20sp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:id="@+id/mNumberLayout">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/number_1"
@@ -96,7 +106,7 @@
             style="@style/text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2"/>
+            android:text="2" />
 
         <TextView
             android:id="@+id/number_5"
@@ -112,7 +122,7 @@
             style="@style/text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2"/>
+            android:text="2" />
 
     </LinearLayout>
 
@@ -121,7 +131,7 @@
         android:id="@+id/key_pad_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -193,8 +203,8 @@
             android:layout_marginStart="@dimen/key_margin"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/key_margin"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -256,8 +266,8 @@
             android:layout_marginStart="@dimen/key_margin"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/key_margin"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -320,8 +330,8 @@
             android:layout_marginStart="@dimen/key_margin"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/key_margin"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -380,9 +390,9 @@
                     android:layout_width="@dimen/key_size"
                     android:layout_height="@dimen/key_size"
                     android:layout_gravity="center"
+                    android:background="@color/transparent"
                     android:gravity="center"
                     android:textAlignment="center"
-                    android:background="@color/transparent"
                     android:visibility="visible" />
 
             </FrameLayout>

@@ -2,7 +2,10 @@ package com.karikari.goodpinkeypad
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
@@ -12,7 +15,9 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import java.util.*
 
 class GoodPinKeyPad : LinearLayout {
@@ -40,7 +45,6 @@ class GoodPinKeyPad : LinearLayout {
     private var indicator6: FrameLayout? = null
     private var mRootLayout: LinearLayout? = null
     private var keyPadContainer: LinearLayout? = null
-    private val mIndicator_layout: LinearLayout? = null
     private val themeMap = HashMap<Int, Drawable>()
     private val solidMap = HashMap<Int, Drawable>()
     private val holoMap = HashMap<Int, Drawable>()
@@ -58,9 +62,20 @@ class GoodPinKeyPad : LinearLayout {
     private var marginLeft = 0f
     private var marginRight = 0f
     private var marginBottom = 0f
+    private var keyTextSize = 0f
+    private var errorTextSize = 0f
     private var background_color = 0
     private var keypadTextColor = 0
-    private var backpressVisibility = 0
+    private var backPressVisibility = 0
+    private var keyBackground: Drawable? = null
+    private var selectedIndicator: Drawable? = null
+    private var defaultIndicator: Drawable? = null
+    private var errorIndicator: Drawable? = null
+    private var errorText: String = ""
+    private var errorTextInt: Int = 0
+    private var errorTextView: TextView? = null
+    private var font: Typeface? = null
+
 
     constructor(context: Context) : super(context) {
         initViews(context)
@@ -86,7 +101,7 @@ class GoodPinKeyPad : LinearLayout {
 
     fun setBackPressView(backView: View?) {
         mBackPressView = backView
-        mBackPressView!!.setOnClickListener { doClearpin() }
+        mBackPressView!!.setOnClickListener { doClearPin() }
     }
 
     fun setCallAllView(callAllView: View?) {
@@ -94,6 +109,23 @@ class GoodPinKeyPad : LinearLayout {
         mCancelAllView!!.setOnClickListener { clearAll() }
     }
 
+    fun setErrorIndicators(isError: Boolean) {
+        if (isError) {
+            setIndicators(-1)
+            indicators.clear()
+        }
+    }
+
+    fun setErrorText(value: String) {
+        this.errorText = value
+    }
+
+    fun setTypeFace(typeface: Typeface?) {
+        this.font = typeface
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initAttributes(context: Context, attrs: AttributeSet?) {
         //themeMap.clear_dark();
@@ -127,10 +159,10 @@ class GoodPinKeyPad : LinearLayout {
             context.theme.obtainStyledAttributes(attrs, R.styleable.GoodPinKeyPad, 0, 0)
         try {
             background_color = typedArray.getColor(
-                R.styleable.GoodPinKeyPad_backgroundColor, context.resources.getColor(
-                    R.color.transparent
-                )
+                R.styleable.GoodPinKeyPad_backgroundColor,
+                ContextCompat.getColor(context, R.color.transparent)
             )
+
             numberOfPins = typedArray.getInt(R.styleable.GoodPinKeyPad_pinEntry, 4)
             themeId = typedArray.getInt(R.styleable.GoodPinKeyPad_keyPadStyle, 1)
             theme = themeMap[themeId]
@@ -139,9 +171,8 @@ class GoodPinKeyPad : LinearLayout {
             back = backMap[themeId]
             cancel = canCelMap[themeId]
             keypadTextColor = typedArray.getColor(
-                R.styleable.GoodPinKeyPad_textColor, context.resources.getColor(
-                    R.color.white
-                )
+                R.styleable.GoodPinKeyPad_textColor,
+                ContextCompat.getColor(context, R.color.transparent)
             )
             keypadBackPressIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_backPressIcon)
             keypadCallAllIcon = typedArray.getDrawable(R.styleable.GoodPinKeyPad_cancelIcon)
@@ -155,8 +186,26 @@ class GoodPinKeyPad : LinearLayout {
             )
             marginRight =
                 typedArray.getDimension(R.styleable.GoodPinKeyPad_marginRight, dpToPx(0f).toFloat())
-            backpressVisibility =
-                typedArray.getInteger(R.styleable.GoodPinKeyPad_controlsPressVisiblity, 1)
+            backPressVisibility =
+                typedArray.getInteger(R.styleable.GoodPinKeyPad_controlsPressVisibility, 1)
+            keyBackground = typedArray.getDrawable(R.styleable.GoodPinKeyPad_keyBackground)
+
+            selectedIndicator = typedArray.getDrawable(R.styleable.GoodPinKeyPad_selectedIndicator)
+
+            defaultIndicator = typedArray.getDrawable(R.styleable.GoodPinKeyPad_defaultIndicator)
+
+            errorIndicator = typedArray.getDrawable(R.styleable.GoodPinKeyPad_errorIndicator)
+
+            keyTextSize =
+                typedArray.getDimension(R.styleable.GoodPinKeyPad_keyTextSize, dpToPx(0f).toFloat())
+
+            errorTextSize =
+                typedArray.getDimension(
+                    R.styleable.GoodPinKeyPad_errorTextSize,
+                    dpToPx(0f).toFloat()
+                )
+
+
         } finally {
             typedArray.recycle()
         }
@@ -166,6 +215,18 @@ class GoodPinKeyPad : LinearLayout {
         for (textView in keypads) {
             textView.background = theme
             textView.setTextColor(keypadTextColor)
+
+            if (keyBackground != null) {
+                textView.background = keyBackground
+            }
+
+            if (font != null) {
+                textView.typeface = font
+            }
+
+            if (keyTextSize != 0f) {
+                textView.textSize = keyTextSize
+            }
         }
         if (keypadBackPressIcon != null) {
             //mBackRight.setImageResource(this.keypadBackPressIcon);
@@ -183,7 +244,7 @@ class GoodPinKeyPad : LinearLayout {
             dpToPx(marginBottom)
         )
         keyPadContainer!!.layoutParams = params
-        if (backpressVisibility == 0) {
+        if (backPressVisibility == 0) {
             mBackLeft!!.visibility = GONE
             mBackRight!!.visibility = GONE
         } else {
@@ -194,12 +255,25 @@ class GoodPinKeyPad : LinearLayout {
                 mBackRight!!.setImageDrawable(back)
             }
         }
+
+        if (selectedIndicator != null) {
+            solid = selectedIndicator
+        }
+
+        if (defaultIndicator != null) {
+            hollow = defaultIndicator
+        }
+
+        if (font != null) {
+            errorTextView!!.typeface = font
+        }
     }
 
     private fun initViews(context: Context) {
         val view = LayoutInflater.from(context).inflate(R.layout.key_pad_layout, this)
         mBackRight = view.findViewById(R.id.back_right)
         mBackLeft = view.findViewById(R.id.back_left)
+        errorTextView = view.findViewById(R.id.mErrorText)
         keypads.add(view.findViewById<View>(R.id.key0) as TextView)
         keypads.add(view.findViewById<View>(R.id.key1) as TextView)
         keypads.add(view.findViewById<View>(R.id.key2) as TextView)
@@ -235,6 +309,8 @@ class GoodPinKeyPad : LinearLayout {
         indicator4!!.background = hollow
         indicator5!!.background = hollow
         indicator6!!.background = hollow
+
+        errorTextView!!.text = errorText
     }
 
     private fun setListener() {
@@ -242,10 +318,12 @@ class GoodPinKeyPad : LinearLayout {
             keypad.setOnClickListener {
                 if (listener != null) {
                     indicators.push(keypad.text.toString())
-                    Log.d(TAG, "indicator Size : " + indicators.size)
+                    // Log.d(TAG, "indicator Size : " + indicators.size)
                     if (indicators.size <= numberOfPins) {
-                        setIdicators(indicators.size)
-                        listener!!.onKeyPadPressed(pinToString(indicators))
+                        setIndicators(indicators.size)
+                        if (indicators.size == numberOfPins) {
+                            listener!!.onKeyPadPressed(pinToString(indicators))
+                        }
                         Log.d(TAG, " Real Value : " + pinToString(indicators))
                     } else {
                         indicators.pop()
@@ -253,48 +331,61 @@ class GoodPinKeyPad : LinearLayout {
                 } else {
                     indicators.push(keypad.text.toString())
                     if (indicators.size <= numberOfPins) {
-                        setIdicators(indicators.size)
+                        setIndicators(indicators.size)
                     } else {
                         indicators.pop()
                     }
                 }
             }
         }
-        mBackRight!!.setOnClickListener { doClearpin() }
+        mBackRight!!.setOnClickListener { doClearPin() }
         mBackLeft!!.setOnClickListener { clearAll() }
     }
 
     private fun clearAll() {
+        Log.d(TAG, "CLEAR")
         if (listener != null) {
             listener!!.onClear()
             try {
                 indicators.clear()
-                setIdicators(0)
-                listener!!.onKeyPadPressed(pinToString(indicators))
+                setIndicators(indicators.size)
+                // listener!!.onKeyPadPressed(pinToString(indicators))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun doClearpin() {
+    private fun doClearPin() {
         if (listener != null) {
             listener!!.onKeyBackPressed()
             try {
                 if (indicators.size != 0) {
                     indicators.pop()
-                    setIdicators(indicators.size)
+                    setIndicators(indicators.size)
                 } else {
-                    setIdicators(indicators.size)
+                    setIndicators(indicators.size)
                 }
-                listener!!.onKeyPadPressed(pinToString(indicators))
+                // listener!!.onKeyPadPressed(pinToString(indicators))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun setIdicators(size: Int) {
+    private fun setError() {
+        if (!TextUtils.isEmpty(errorText)) {
+            errorTextView!!.visibility = VISIBLE
+            errorTextView!!.text = errorText
+        }
+
+        if (errorTextSize != 0f) {
+            errorTextView!!.textSize = errorTextSize
+        }
+    }
+
+    private fun setIndicators(size: Int) {
+        Log.d(TAG, "Indicator Size $size")
         when (size) {
             0 -> {
                 indicator1!!.background = hollow
@@ -303,6 +394,7 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = hollow
                 indicator5!!.background = hollow
                 indicator6!!.background = hollow
+                errorTextView!!.visibility = INVISIBLE
             }
             1 -> {
                 indicator1!!.background = solid
@@ -311,6 +403,7 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = hollow
                 indicator5!!.background = hollow
                 indicator6!!.background = hollow
+                errorTextView!!.visibility = INVISIBLE
             }
             2 -> {
                 indicator1!!.background = solid
@@ -319,6 +412,7 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = hollow
                 indicator5!!.background = hollow
                 indicator6!!.background = hollow
+                errorTextView!!.visibility = INVISIBLE
             }
             3 -> {
                 indicator1!!.background = solid
@@ -327,6 +421,7 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = hollow
                 indicator5!!.background = hollow
                 indicator6!!.background = hollow
+                errorTextView!!.visibility = INVISIBLE
             }
             4 -> {
                 indicator1!!.background = solid
@@ -335,6 +430,7 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = solid
                 indicator5!!.background = hollow
                 indicator6!!.background = hollow
+                errorTextView!!.visibility = INVISIBLE
             }
             5 -> {
                 indicator1!!.background = solid
@@ -343,6 +439,7 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = solid
                 indicator5!!.background = solid
                 indicator6!!.background = hollow
+                errorTextView!!.visibility = INVISIBLE
             }
             6 -> {
                 indicator1!!.background = solid
@@ -351,6 +448,16 @@ class GoodPinKeyPad : LinearLayout {
                 indicator4!!.background = solid
                 indicator5!!.background = solid
                 indicator6!!.background = solid
+                errorTextView!!.visibility = INVISIBLE
+            }
+            -1 -> {
+                indicator1!!.background = errorIndicator
+                indicator2!!.background = errorIndicator
+                indicator3!!.background = errorIndicator
+                indicator4!!.background = errorIndicator
+                indicator5!!.background = errorIndicator
+                indicator6!!.background = errorIndicator
+                setError()
             }
         }
     }
@@ -368,7 +475,7 @@ class GoodPinKeyPad : LinearLayout {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics)
     }
 
-    fun dpToPx(valueInDp: Float): Int {
+    private fun dpToPx(valueInDp: Float): Int {
         return TypedValue.applyDimension(1, valueInDp, this.resources.displayMetrics)
             .toInt()
     }

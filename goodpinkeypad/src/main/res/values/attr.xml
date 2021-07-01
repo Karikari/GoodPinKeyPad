@@ -20,6 +20,19 @@
 
         <attr name="marginBottom" format="dimension"/>
 
+        <attr name="keyBackground" format="reference"/>
+
+        <attr name="selectedIndicator" format="reference"/>
+
+        <attr name="defaultIndicator" format="reference"/>
+
+        <attr name="errorIndicator" format="reference"/>
+
+        <attr name="font" format="reference"/>
+
+        <attr name="keyTextSize" format="dimension"/>
+
+        <attr name="errorTextSize" format="dimension"/>
 
         <attr name="pinEntry" format="enum">
             <enum name="four" value="4"/>
@@ -34,7 +47,7 @@
             <enum name="dark_border" value="4"/>
         </attr>
 
-        <attr name="controlsPressVisiblity" format="enum">
+        <attr name="controlsPressVisibility" format="enum">
             <enum name="visible" value="1"/>
             <enum name="gone" value="0"/>
         </attr>

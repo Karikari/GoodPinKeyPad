@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,12 +17,17 @@ class MainActivity : AppCompatActivity() {
 
         //MaterialButton back_dark = findViewById(R.id.bac);
         val keyPad = findViewById<GoodPinKeyPad>(R.id.key)
+        val typeface = ResourcesCompat.getFont(this, R.font.play_fair)
+        keyPad.setTypeFace(typeface)
+        keyPad.setErrorText("All be lies")
 
         //keyPad.setBackPressView(back_dark);
 
         keyPad.setKeyPadListener( object : KeyPadListerner {
             override fun onKeyPadPressed(value: String?) {
                 Log.d(TAG, "Key pressed : $value")
+
+                keyPad.setErrorIndicators(true)
             }
 
             override fun onKeyBackPressed() {
