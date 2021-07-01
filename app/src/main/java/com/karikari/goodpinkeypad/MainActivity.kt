@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             override fun onKeyPadPressed(value: String?) {
                 Log.d(TAG, "Key pressed : $value")
 
-                keyPad.setErrorIndicators(true)
+                //keyPad.setErrorIndicators(true)
             }
 
             override fun onKeyBackPressed() {
