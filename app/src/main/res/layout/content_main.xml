@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,16 +16,17 @@
         android:id="@+id/key"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        app:textColor="#db3a34"
-        app:marginTop="20dp"
-        app:pinEntry="four"
-        app:font="@font/play_fair"
-        app:errorTextSize="15sp"
         app:defaultIndicator="@drawable/black_hollow_dot"
-        app:selectedIndicator="@drawable/black_solid_dot"
         app:errorIndicator="@drawable/black_hollow_dot_error"
-        app:keyBackground="@drawable/keys_white_theme_selector"/>
+        app:font="@font/play_fair"
+        app:keyBackground="@drawable/keys_white_theme_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:marginTop="5dp"
+        app:pinEntry="four"
+        app:selectedIndicator="@drawable/black_solid_dot"
+        app:textColor="#db3a34"
+        tools:layout_editor_absoluteY="100dp" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -318,13 +318,11 @@ class GoodPinKeyPad : LinearLayout {
             keypad.setOnClickListener {
                 if (listener != null) {
                     indicators.push(keypad.text.toString())
-                    // Log.d(TAG, "indicator Size : " + indicators.size)
                     if (indicators.size <= numberOfPins) {
                         setIndicators(indicators.size)
                         if (indicators.size == numberOfPins) {
                             listener!!.onKeyPadPressed(pinToString(indicators))
                         }
-                        Log.d(TAG, " Real Value : " + pinToString(indicators))
                     } else {
                         indicators.pop()
                     }
@@ -343,7 +341,6 @@ class GoodPinKeyPad : LinearLayout {
     }
 
     private fun clearAll() {
-        Log.d(TAG, "CLEAR")
         if (listener != null) {
             listener!!.onClear()
             try {
@@ -385,7 +382,6 @@ class GoodPinKeyPad : LinearLayout {
     }
 
     private fun setIndicators(size: Int) {
-        Log.d(TAG, "Indicator Size $size")
         when (size) {
             0 -> {
                 indicator1!!.background = hollow
