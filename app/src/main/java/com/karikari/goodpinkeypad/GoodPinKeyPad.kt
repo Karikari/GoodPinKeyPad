@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import java.util.*
 
+
 class GoodPinKeyPad : LinearLayout {
     companion object {
         private val TAG = GoodPinKeyPad::class.java.simpleName
@@ -197,7 +198,7 @@ class GoodPinKeyPad : LinearLayout {
             errorIndicator = typedArray.getDrawable(R.styleable.GoodPinKeyPad_errorIndicator)
 
             keyTextSize =
-                typedArray.getDimension(R.styleable.GoodPinKeyPad_keyTextSize, dpToPx(0f).toFloat())
+                typedArray.getFloat(R.styleable.GoodPinKeyPad_keyTextSize, 0f)
 
             errorTextSize =
                 typedArray.getDimension(
@@ -225,7 +226,7 @@ class GoodPinKeyPad : LinearLayout {
             }
 
             if (keyTextSize != 0f) {
-                textView.textSize = keyTextSize
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, keyTextSize)
             }
         }
         if (keypadBackPressIcon != null) {
@@ -473,6 +474,27 @@ class GoodPinKeyPad : LinearLayout {
 
     private fun dpToPx(valueInDp: Float): Int {
         return TypedValue.applyDimension(1, valueInDp, this.resources.displayMetrics)
+            .toInt()
+    }
+
+    fun dpToSp(dp: Float, context: Context): Int {
+        return (dpToPxx(dp, context) / context.resources.displayMetrics.scaledDensity).toInt()
+    }
+    fun dpToPxx(dp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.resources.displayMetrics
+        )
+            .toInt()
+    }
+
+    fun spToPx(sp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            sp,
+            context.resources.displayMetrics
+        )
             .toInt()
     }
 }

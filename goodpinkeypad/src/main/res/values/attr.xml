@@ -30,7 +30,7 @@
 
         <attr name="font" format="reference"/>
 
-        <attr name="keyTextSize" format="dimension"/>
+        <attr name="keyTextSize" format="float"/>
 
         <attr name="errorTextSize" format="dimension"/>
 

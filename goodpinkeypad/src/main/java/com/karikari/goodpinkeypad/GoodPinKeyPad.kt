@@ -197,7 +197,7 @@ class GoodPinKeyPad : LinearLayout {
             errorIndicator = typedArray.getDrawable(R.styleable.GoodPinKeyPad_errorIndicator)
 
             keyTextSize =
-                typedArray.getDimension(R.styleable.GoodPinKeyPad_keyTextSize, dpToPx(0f).toFloat())
+                typedArray.getFloat(R.styleable.GoodPinKeyPad_keyTextSize, 0f)
 
             errorTextSize =
                 typedArray.getDimension(
@@ -225,7 +225,7 @@ class GoodPinKeyPad : LinearLayout {
             }
 
             if (keyTextSize != 0f) {
-                textView.textSize = keyTextSize
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, keyTextSize)
             }
         }
         if (keypadBackPressIcon != null) {
