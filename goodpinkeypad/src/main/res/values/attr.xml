@@ -20,6 +20,8 @@
 
         <attr name="marginBottom" format="dimension"/>
 
+        <attr name="keySize" format="dimension"/>
+
         <attr name="keyBackground" format="reference"/>
 
         <attr name="selectedIndicator" format="reference"/>
@@ -33,6 +35,7 @@
         <attr name="keyTextSize" format="float"/>
 
         <attr name="errorTextSize" format="dimension"/>
+
 
         <attr name="pinEntry" format="enum">
             <enum name="four" value="4"/>

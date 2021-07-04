@@ -11,6 +11,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -19,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import java.util.*
+
 
 class GoodPinKeyPad : LinearLayout {
     companion object {
@@ -62,6 +64,7 @@ class GoodPinKeyPad : LinearLayout {
     private var marginLeft = 0f
     private var marginRight = 0f
     private var marginBottom = 0f
+    private var keySize = 0f
     private var keyTextSize = 0f
     private var errorTextSize = 0f
     private var background_color = 0
@@ -125,7 +128,6 @@ class GoodPinKeyPad : LinearLayout {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initAttributes(context: Context, attrs: AttributeSet?) {
         //themeMap.clear_dark();
@@ -186,6 +188,8 @@ class GoodPinKeyPad : LinearLayout {
             )
             marginRight =
                 typedArray.getDimension(R.styleable.GoodPinKeyPad_marginRight, dpToPx(0f).toFloat())
+            keySize =
+                typedArray.getDimension(R.styleable.GoodPinKeyPad_keySize, dpToPx(0f).toFloat())
             backPressVisibility =
                 typedArray.getInteger(R.styleable.GoodPinKeyPad_controlsPressVisibility, 1)
             keyBackground = typedArray.getDrawable(R.styleable.GoodPinKeyPad_keyBackground)
@@ -205,6 +209,9 @@ class GoodPinKeyPad : LinearLayout {
                     dpToPx(0f).toFloat()
                 )
 
+            @RequiresApi(Build.VERSION_CODES.O)
+            font = typedArray.getFont(R.styleable.GoodPinKeyPad_font)
+
 
         } finally {
             typedArray.recycle()
@@ -212,6 +219,8 @@ class GoodPinKeyPad : LinearLayout {
     }
 
     private fun setThemes() {
+
+
         for (textView in keypads) {
             textView.background = theme
             textView.setTextColor(keypadTextColor)
@@ -227,6 +236,14 @@ class GoodPinKeyPad : LinearLayout {
             if (keyTextSize != 0f) {
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, keyTextSize)
             }
+
+            if (keySize != 0f) {
+                val textViewParam = textView.layoutParams as ViewGroup.LayoutParams
+                textViewParam.height = keySize.toInt()
+                textViewParam.width =  keySize.toInt()
+                textView.layoutParams = textViewParam
+            }
+
         }
         if (keypadBackPressIcon != null) {
             //mBackRight.setImageResource(this.keypadBackPressIcon);
@@ -318,13 +335,11 @@ class GoodPinKeyPad : LinearLayout {
             keypad.setOnClickListener {
                 if (listener != null) {
                     indicators.push(keypad.text.toString())
-                    // Log.d(TAG, "indicator Size : " + indicators.size)
                     if (indicators.size <= numberOfPins) {
                         setIndicators(indicators.size)
                         if (indicators.size == numberOfPins) {
                             listener!!.onKeyPadPressed(pinToString(indicators))
                         }
-                        Log.d(TAG, " Real Value : " + pinToString(indicators))
                     } else {
                         indicators.pop()
                     }
@@ -343,7 +358,6 @@ class GoodPinKeyPad : LinearLayout {
     }
 
     private fun clearAll() {
-        Log.d(TAG, "CLEAR")
         if (listener != null) {
             listener!!.onClear()
             try {
@@ -385,7 +399,6 @@ class GoodPinKeyPad : LinearLayout {
     }
 
     private fun setIndicators(size: Int) {
-        Log.d(TAG, "Indicator Size $size")
         when (size) {
             0 -> {
                 indicator1!!.background = hollow
@@ -477,6 +490,32 @@ class GoodPinKeyPad : LinearLayout {
 
     private fun dpToPx(valueInDp: Float): Int {
         return TypedValue.applyDimension(1, valueInDp, this.resources.displayMetrics)
+            .toInt()
+    }
+
+    private fun dpToPxF(valueInDp: Float): Float {
+        return TypedValue.applyDimension(1, valueInDp, this.resources.displayMetrics)
+    }
+
+    fun dpToSp(dp: Float, context: Context): Int {
+        return (dpToPxx(dp, context) / context.resources.displayMetrics.scaledDensity).toInt()
+    }
+
+    fun dpToPxx(dp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.resources.displayMetrics
+        )
+            .toInt()
+    }
+
+    fun spToPx(sp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            sp,
+            context.resources.displayMetrics
+        )
             .toInt()
     }
 }
