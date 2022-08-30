@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         //keyPad.setBackPressView(back_dark);
 
+        keyPad.setErrorIndicators(true)
         keyPad.setKeyPadListener( object : KeyPadListerner {
             override fun onKeyPadPressed(value: String?) {
                 Log.d(TAG, "Key pressed : $value")

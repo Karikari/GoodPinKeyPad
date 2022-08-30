@@ -209,9 +209,13 @@ class GoodPinKeyPad : LinearLayout {
                     dpToPx(0f).toFloat()
                 )
 
-            @RequiresApi(Build.VERSION_CODES.O)
-            font = typedArray.getFont(R.styleable.GoodPinKeyPad_font)
-
+            /**
+             *  This sets the font type at the XML
+             *  if SDK version is less than 26 you can use the setTypeFace Function
+             */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                font = typedArray.getFont(R.styleable.GoodPinKeyPad_font)
+            }
 
         } finally {
             typedArray.recycle()
